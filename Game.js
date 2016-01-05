@@ -28,10 +28,15 @@ BasicGame.Game = function (game) {
 BasicGame.Game.prototype = {
 
     create: function () {
+      this.stateText;
       this.platforms;
       this.pauline;
       this.player;
       this.ladders;
+      this.barrels;
+      this.oilBarrel;
+      this.donkeyKong;
+      this.spaceKey;
 
       this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -41,6 +46,9 @@ BasicGame.Game.prototype = {
 
       this.ladders = this.game.add.group();
       this.ladders.enableBody = true;
+
+      this.barrels = this.game.add.group();
+      this.barrels.enableBody = true;
 
 
       for (var i = 0; i < 14; i++) {
@@ -59,7 +67,7 @@ BasicGame.Game.prototype = {
         platform.body.checkCollision.right = false;
       }
 
-      for (var i = 0; i < 20; i++) {
+      for (var i = 0; i < 30; i++) {
         var platform = this.platforms.create(315 - 15 * i, 340 - 1 * i, 'platform');
         platform.body.immovable = true;
         platform.body.checkCollision.down = false;
@@ -75,7 +83,7 @@ BasicGame.Game.prototype = {
         platform.body.checkCollision.right = false;
       }
 
-      for (var i = 0; i < 20; i++) {
+      for (var i = 0; i < 30; i++) {
         var platform = this.platforms.create(320 - 15 * i, 240 - 1 * i, 'platform');
         platform.body.immovable = true;
         platform.body.checkCollision.down = false;
@@ -123,28 +131,28 @@ BasicGame.Game.prototype = {
         platform.body.checkCollision.right = false;
       }
 
-      for (var i = 0; i < 2; i++) {
-        var ladder = this.ladders.create(280, 360 - 12 * i, 'ladder');
+      for (var i = 0; i < 3; i++) {
+        var ladder = this.ladders.create(280, 365 - 12 * i, 'ladder');
         ladder.body.immovable = true;
       }
 
       for (var i = 0; i < 4; i++) {
-        var ladder = this.ladders.create(180, 320 - 12 * i, 'ladder');
+        var ladder = this.ladders.create(150, 320 - 12 * i, 'ladder');
         ladder.body.immovable = true;
       }
 
-      for (var i = 0; i < 2; i++) {
-        var ladder = this.ladders.create(80, 310 - 12 * i, 'ladder');
+      for (var i = 0; i < 3; i++) {
+        var ladder = this.ladders.create(80, 315 - 12 * i, 'ladder');
         ladder.body.immovable = true;
       }
 
       for (var i = 0; i < 4; i++) {
-        var ladder = this.ladders.create(220, 270 - 12 * i, 'ladder');
+        var ladder = this.ladders.create(240, 270 - 12 * i, 'ladder');
         ladder.body.immovable = true;
       }
 
-      for (var i = 0; i < 2; i++) {
-        var ladder = this.ladders.create(307, 260 - 12 * i, 'ladder');
+      for (var i = 0; i < 3; i++) {
+        var ladder = this.ladders.create(307, 265 - 12 * i, 'ladder');
         ladder.body.immovable = true;
       }
 
@@ -153,18 +161,27 @@ BasicGame.Game.prototype = {
         ladder.body.immovable = true;
       }
 
-      for (var i = 0; i < 2; i++) {
-        var ladder = this.ladders.create(70, 210 - 12 * i, 'ladder');
+      for (var i = 0; i < 3; i++) {
+        var ladder = this.ladders.create(70, 215 - 12 * i, 'ladder');
         ladder.body.immovable = true;
       }
 
-      for (var i = 0; i < 2; i++) {
-        var ladder = this.ladders.create(307, 160 - 12 * i, 'ladder');
+      for (var i = 0; i < 3; i++) {
+        var ladder = this.ladders.create(307, 165 - 12 * i, 'ladder');
         ladder.body.immovable = true;
       }
 
 
       this.pauline = this.game.add.sprite(130, 90, 'pauline');
+      this.game.physics.enable(this.pauline);
+
+      this.donkeyKong = this.game.add.sprite(60, 100, 'donkey_kong');
+      this.donkeyKong.animations.add('throw', [2, 4, 1], 5, false);
+
+      this.oilBarrel = this.game.add.sprite(0, 350, 'oil_barrel');
+      this.game.physics.enable(this.oilBarrel);
+      // this.oilBarrel.animations.add('fire', [0, 1], 10, true);
+
       this.player = this.game.add.sprite(0, 350, 'mario');
 
       this.game.physics.enable(this.player);
@@ -175,11 +192,66 @@ BasicGame.Game.prototype = {
       this.player.animations.add('right', [4, 5], 10, true);
 
       cursors = this.game.input.keyboard.createCursorKeys();
+
+      this.game.time.events.add(5000 + (5000 * Math.random()), this.throwBarrel, this);
+
+      this.stateText = this.game.add.text(this.game.world.centerX,this.game.world.centerY,' ', { font: '48px Arial', fill: '#fff' });
+      this.stateText.anchor.setTo(0.5, 0.5);
+      this.stateText.visible = false;
+
+      this.music = this.add.audio('gameMusic');
+  		this.music.play();
+      this.music.loopFull();
+      this.spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
+    },
+
+    climb: function() {
+
+
+      if (cursors.up.isDown) {
+        this.player.body.velocity.y = -50;
+      }
+      if (cursors.down.isDown) {
+        this.player.body.velocity.y = 50;
+      }
+
+    },
+
+    throwBarrel: function() {
+      this.donkeyKong.animations.play('throw');
+      var barrel = this.barrels.create(90, 110, 'barrel');
+      this.game.physics.enable(barrel);
+      barrel.animations.add('roll', [0, 1, 2, 3], 10, true)
+      barrel.body.velocity.x = 50;
+      barrel.body.gravity.y = 300;
+      barrel.body.collideWorldBounds = true;
+      barrel.body.bounce.setTo(1, 0);
+
+      this.game.time.events.add(5000 + (5000 * Math.random()), this.throwBarrel, this);
+
+
+    },
+
+    killBarrel: function(oilBarrel, barrel) {
+      barrel.kill();
     },
 
     update: function () {
 
+      this.barrels.callAll('play', null, 'roll');
+
+      // this.oilBarrel.animations.play('fire');
+
+      this.player.body.gravity.y = 300;
       this.game.physics.arcade.collide(this.player, this.platforms);
+      this.game.physics.arcade.collide(this.barrels, this.platforms);
+
+      this.game.physics.arcade.overlap(this.barrels, this.oilBarrel, this.killBarrel.bind(this));
+      this.game.physics.arcade.overlap(this.barrels, this.player, this.quitGame.bind(this));
+
+      this.game.physics.arcade.overlap(this.player, this.ladders, this.climb.bind(this));
+      this.game.physics.arcade.overlap(this.player, this.pauline, this.winGame.bind(this));
 
       this.player.body.velocity.x = 0;
       if (cursors.left.isDown)
@@ -201,21 +273,36 @@ BasicGame.Game.prototype = {
       }
 
       //  Allow the this.player to jump if they are touching the ground.
-      if (cursors.up.isDown && this.player.body.touching.down)
+      if (this.spaceKey.isDown && this.player.body.touching.down)
       {
-          this.player.body.velocity.y = -130;
+          this.player.body.velocity.y = -125;
       }
 
+    },
+
+    restart: function() {
+      this.state.start('MainMenu');
     },
 
     quitGame: function (pointer) {
 
         //  Here you should destroy anything you no longer need.
         //  Stop music, delete sprites, purge caches, free resources, all that good stuff.
-
+        this.player.kill();
+        this.barrels.callAll('kill');
+        this.stateText.text=" GAME OVER \n Click to restart";
+        this.stateText.visible = true;
         //  Then let's go back to the main menu.
-        this.state.start('MainMenu');
+        this.game.input.onTap.addOnce(this.restart.bind(this),this);
 
+
+    },
+
+    winGame: function() {
+      this.stateText.text=" YOU WIN \n Click to restart";
+      this.stateText.visible = true;
+      //  Then let's go back to the main menu.
+      this.game.input.onTap.addOnce(this.restart.bind(this),this);
     }
 
 };

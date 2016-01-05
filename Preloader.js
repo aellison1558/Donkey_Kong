@@ -33,6 +33,10 @@ BasicGame.Preloader.prototype = {
 		this.load.image('ladder', 'images/ladder2.png');
 		this.load.image('pauline', 'images/pauline1.png');
 		this.load.spritesheet('mario', 'images/mario.png', 21, 18);
+		this.load.spritesheet('barrel', 'images/side_barrel.png', 15, 13);
+		this.load.spritesheet('oil_barrel', 'images/oil_barrel.png', 22, 25);
+		this.load.spritesheet('donkey_kong', 'images/donkey_kong.png', 48, 33);
+		this.load.audio('gameMusic', ['audio/game_music.mp3']);
 
 	},
 
