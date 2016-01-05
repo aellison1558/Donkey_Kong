@@ -24,18 +24,22 @@ BasicGame.Preloader.prototype = {
 
 		//	Here we load the rest of the assets our game needs.
 		//	As this is just a Project Template I've not provided these assets, swap them for your own.
-		this.load.image('titlepage', 'images/title.jpg');
-		this.load.atlas('playButton', 'images/play.png');
+		this.load.image('titlepage', 'images/main_menu.jpg');
+		this.load.image('playButton', 'images/play.png');
 		this.load.audio('titleMusic', ['audio/title_theme.mp3']);
 		// this.load.bitmapFont('caslon', 'fonts/caslon.png', 'fonts/caslon.xml');
 		//	+ lots of other required assets here
 		this.load.image('platform', 'images/platform1.png');
 		this.load.image('ladder', 'images/ladder2.png');
 		this.load.image('pauline', 'images/pauline1.png');
+		this.load.image('hammer', 'images/hammer.gif');
 		this.load.spritesheet('mario', 'images/mario.png', 21, 18);
+		this.load.spritesheet('mario_hammer', 'images/mariohammer.gif', 28, 32);
 		this.load.spritesheet('barrel', 'images/side_barrel.png', 15, 13);
 		this.load.spritesheet('oil_barrel', 'images/oil_barrel.png', 22, 25);
 		this.load.spritesheet('donkey_kong', 'images/donkey_kong.png', 48, 33);
+		this.load.spritesheet('fireball', 'images/fireball.gif', 21, 20);
+		this.load.image('falling_barrel', 'images/falling_barrel.gif');
 		this.load.audio('gameMusic', ['audio/game_music.mp3']);
 
 	},

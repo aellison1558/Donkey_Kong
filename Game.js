@@ -37,6 +37,13 @@ BasicGame.Game.prototype = {
       this.oilBarrel;
       this.donkeyKong;
       this.spaceKey;
+      this.blueBarrel;
+      this.fireball;
+      this.fallingBarrel;
+      this.hammers;
+      this.hasHammer;
+      this.score;
+      this.scoreText;
 
       this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -49,6 +56,9 @@ BasicGame.Game.prototype = {
 
       this.barrels = this.game.add.group();
       this.barrels.enableBody = true;
+
+      this.hammers = this.game.add.group();
+      this.hammers.enableBody = true;
 
 
       for (var i = 0; i < 14; i++) {
@@ -171,12 +181,19 @@ BasicGame.Game.prototype = {
         ladder.body.immovable = true;
       }
 
+      var hammer = this.hammers.create(65, 250, 'hammer');
+      var hammer = this.hammers.create(65, 150, 'hammer');
+
 
       this.pauline = this.game.add.sprite(130, 90, 'pauline');
       this.game.physics.enable(this.pauline);
 
-      this.donkeyKong = this.game.add.sprite(60, 100, 'donkey_kong');
+      this.donkeyKong = this.game.add.sprite(20, 100, 'donkey_kong');
       this.donkeyKong.animations.add('throw', [2, 4, 1], 5, false);
+
+      this.fallingBarrel = this.game.add.sprite(0, 100, 'falling_barrel');
+      this.game.physics.enable(this.fallingBarrel);
+      this.fallingBarrel.body.velocity.y = 100;
 
       this.oilBarrel = this.game.add.sprite(0, 350, 'oil_barrel');
       this.game.physics.enable(this.oilBarrel);
@@ -191,13 +208,19 @@ BasicGame.Game.prototype = {
       this.player.animations.add('left', [0, 1], 10, true);
       this.player.animations.add('right', [4, 5], 10, true);
 
+
+
       cursors = this.game.input.keyboard.createCursorKeys();
 
-      this.game.time.events.add(5000 + (5000 * Math.random()), this.throwBarrel, this);
+
+      this.game.time.events.add(3000 + (3000 * Math.random()), this.throwBarrel, this);
 
       this.stateText = this.game.add.text(this.game.world.centerX,this.game.world.centerY,' ', { font: '48px Arial', fill: '#fff' });
       this.stateText.anchor.setTo(0.5, 0.5);
       this.stateText.visible = false;
+
+      this.score = 0;
+      this.scoreText = this.game.add.text(40,16,'score: ' + this.score, { font: '12px Arial', fill: '#fff' });
 
       this.music = this.add.audio('gameMusic');
   		this.music.play();
@@ -206,14 +229,55 @@ BasicGame.Game.prototype = {
 
     },
 
+    createFireball: function() {
+      this.fallingBarrel.kill();
+      this.fireball = this.game.add.sprite(0, 350, 'fireball');
+      this.game.physics.enable(this.fireball);
+      this.fireball.animations.add('left', [0, 1]);
+      this.fireball.animations.add('right', [2, 3]);
+      this.fireball.body.collideWorldBounds = true;
+      this.fireball.body.bounce.setTo(1, 0);
+      this.game.time.events.add(1000, this.moveFire, this);
+    },
+
+    moveFire: function() {
+      var direction = Math.random();
+      if (this.fireball.y - this.player.y > 100) {
+        this.fireball.body.velocity.y = -20;
+      } else if (this.fireball.y - this.player.y < -100) {
+        this.fireball.body.velocity.y = 20;
+      }
+      else {
+        if (direction < 0.5) {
+          this.fireball.body.velocity.y = -20
+        } else {
+          this.fireball.body.velocity.y = 20
+        }
+      }
+      if (direction < 0.5) {
+        this.fireball.body.velocity.x = -20;
+        this.fireball.animations.play('left');
+      } else {
+        this.fireball.body.velocity.x = 20;
+        this.fireball.animations.play('right');
+      }
+      this.game.time.events.add(1000, this.moveFire, this);
+
+    },
+
+    killFire: function() {
+
+    },
+
     climb: function() {
 
-
-      if (cursors.up.isDown) {
-        this.player.body.velocity.y = -50;
-      }
-      if (cursors.down.isDown) {
-        this.player.body.velocity.y = 50;
+      if (!this.hasHammer) {
+        if (cursors.up.isDown) {
+          this.player.body.velocity.y = -50;
+        }
+        if (cursors.down.isDown) {
+          this.player.body.velocity.y = 50;
+        }
       }
 
     },
@@ -223,18 +287,50 @@ BasicGame.Game.prototype = {
       var barrel = this.barrels.create(90, 110, 'barrel');
       this.game.physics.enable(barrel);
       barrel.animations.add('roll', [0, 1, 2, 3], 10, true)
-      barrel.body.velocity.x = 50;
+      barrel.body.velocity.x = 75;
       barrel.body.gravity.y = 300;
       barrel.body.collideWorldBounds = true;
       barrel.body.bounce.setTo(1, 0);
 
-      this.game.time.events.add(5000 + (5000 * Math.random()), this.throwBarrel, this);
+      this.game.time.events.add(3000 + (4000 * Math.random()), this.throwBarrel, this);
 
 
     },
 
     killBarrel: function(oilBarrel, barrel) {
       barrel.kill();
+      if (this.hasHammer) {
+        this.score += 500;
+      }
+      this.scoreText.text = 'score: ' + this.score;
+    },
+
+    pickUpHammer: function(player, hammer) {
+      hammer.kill();
+      this.hasHammer = true;
+      this.player.loadTexture('mario_hammer', 0);
+      this.game.physics.enable(this.player);
+      this.player.body.velocity.y = 0;
+      this.player.body.gravity.y = 0;
+      this.player.body.y -= 20;
+      this.game.time.events.add(5000, this.dropHammer, this);
+    },
+
+    dropHammer: function() {
+      this.hasHammer = false;
+      this.player.loadTexture('mario', 0);
+    },
+
+    jumpOverBarrel: function() {
+      var barrels = this.barrels.children
+      barrels.forEach(function(barrel) {
+        var diffY = barrel.body.y - this.player.body.y;
+        var diffX = barrel.body.x - this.player.body.x;
+        if (diffY < 130 && diffY > 0 && diffX < 70 && diffX > -70) {
+          this.score += 100;
+          this.scoreText.text = "score: " + this.score;
+        }
+      }.bind(this))
     },
 
     update: function () {
@@ -248,7 +344,15 @@ BasicGame.Game.prototype = {
       this.game.physics.arcade.collide(this.barrels, this.platforms);
 
       this.game.physics.arcade.overlap(this.barrels, this.oilBarrel, this.killBarrel.bind(this));
-      this.game.physics.arcade.overlap(this.barrels, this.player, this.quitGame.bind(this));
+      this.game.physics.arcade.overlap(this.fallingBarrel, this.oilBarrel, this.createFireball.bind(this));
+      this.game.physics.arcade.overlap(this.hammers, this.player, this.pickUpHammer.bind(this));
+
+      if (this.hasHammer) {
+        this.game.physics.arcade.overlap(this.barrels, this.player, this.killBarrel.bind(this));
+      } else {
+        this.game.physics.arcade.overlap(this.barrels, this.player, this.quitGame.bind(this));
+        this.game.physics.arcade.overlap(this.fireball, this.player, this.quitGame.bind(this));
+      }
 
       this.game.physics.arcade.overlap(this.player, this.ladders, this.climb.bind(this));
       this.game.physics.arcade.overlap(this.player, this.pauline, this.winGame.bind(this));
@@ -273,9 +377,10 @@ BasicGame.Game.prototype = {
       }
 
       //  Allow the this.player to jump if they are touching the ground.
-      if (this.spaceKey.isDown && this.player.body.touching.down)
+      if (this.spaceKey.isDown && this.player.body.touching.down && !this.hasHammer)
       {
           this.player.body.velocity.y = -125;
+          this.jumpOverBarrel();
       }
 
     },
@@ -299,6 +404,8 @@ BasicGame.Game.prototype = {
     },
 
     winGame: function() {
+      this.score += 2000;
+      this.scoreText.text = "score: " + this.score;
       this.stateText.text=" YOU WIN \n Click to restart";
       this.stateText.visible = true;
       //  Then let's go back to the main menu.
