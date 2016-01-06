@@ -39,6 +39,7 @@ BasicGame.Preloader.prototype = {
 		this.load.spritesheet('oil_barrel', 'images/oil_barrel.png', 22, 25);
 		this.load.spritesheet('donkey_kong', 'images/donkey_kong.png', 48, 33);
 		this.load.spritesheet('fireball', 'images/fireball.gif', 21, 20);
+		this.load.image('mario_death', 'images/mariodeath.gif');
 		this.load.image('falling_barrel', 'images/falling_barrel.gif');
 		this.load.audio('gameMusic', ['audio/game_music.mp3']);
 

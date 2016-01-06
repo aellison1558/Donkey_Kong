@@ -270,15 +270,21 @@ BasicGame.Game.prototype = {
     },
 
     climb: function() {
-
-      if (!this.hasHammer) {
-        if (cursors.up.isDown) {
-          this.player.body.velocity.y = -50;
+      var ladders = this.ladders.children
+      ladders.forEach(function(ladder) {
+        var diffX = ladder.body.x - this.player.body.x;
+        if (diffX < 0 && diffX > -12)
+        {
+          if (!this.hasHammer) {
+            if (cursors.up.isDown) {
+              this.player.body.velocity.y = -50;
+            }
+            if (cursors.down.isDown) {
+              this.player.body.velocity.y = 50;
+            }
+          }
         }
-        if (cursors.down.isDown) {
-          this.player.body.velocity.y = 50;
-        }
-      }
+      }.bind(this))
 
     },
 
@@ -393,10 +399,14 @@ BasicGame.Game.prototype = {
 
         //  Here you should destroy anything you no longer need.
         //  Stop music, delete sprites, purge caches, free resources, all that good stuff.
-        this.player.kill();
+        this.player.loadTexture('mario_death');
+        cursors.disable = true;
+        // this.player.kill();
         this.barrels.callAll('kill');
         this.stateText.text=" GAME OVER \n Click to restart";
         this.stateText.visible = true;
+        this.music.stop();
+        this.game.time.events.remove();
         //  Then let's go back to the main menu.
         this.game.input.onTap.addOnce(this.restart.bind(this),this);
 
