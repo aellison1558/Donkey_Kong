@@ -45,6 +45,7 @@ BasicGame.Game.prototype = {
       this.score;
       this.scoreText;
       this.gameOver;
+      this.standingBarrels;
 
       this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -60,6 +61,9 @@ BasicGame.Game.prototype = {
 
       this.hammers = this.game.add.group();
       this.hammers.enableBody = true;
+
+      this.standingBarrels = this.game.add.group();
+      this.standingBarrels.enableBody = true;
 
 
       for (var i = 0; i < 14; i++) {
@@ -78,7 +82,7 @@ BasicGame.Game.prototype = {
         platform.body.checkCollision.right = false;
       }
 
-      for (var i = 0; i < 30; i++) {
+      for (var i = 0; i < 50; i++) {
         var platform = this.platforms.create(315 - 15 * i, 340 - 1 * i, 'platform');
         platform.body.immovable = true;
         platform.body.checkCollision.down = false;
@@ -147,18 +151,8 @@ BasicGame.Game.prototype = {
         ladder.body.immovable = true;
       }
 
-      for (var i = 0; i < 4; i++) {
-        var ladder = this.ladders.create(150, 320 - 12 * i, 'ladder');
-        ladder.body.immovable = true;
-      }
-
       for (var i = 0; i < 3; i++) {
         var ladder = this.ladders.create(80, 315 - 12 * i, 'ladder');
-        ladder.body.immovable = true;
-      }
-
-      for (var i = 0; i < 4; i++) {
-        var ladder = this.ladders.create(240, 270 - 12 * i, 'ladder');
         ladder.body.immovable = true;
       }
 
@@ -167,10 +161,6 @@ BasicGame.Game.prototype = {
         ladder.body.immovable = true;
       }
 
-      for (var i = 0; i < 3; i++) {
-        var ladder = this.ladders.create(130, 215 - 12 * i, 'ladder');
-        ladder.body.immovable = true;
-      }
 
       for (var i = 0; i < 3; i++) {
         var ladder = this.ladders.create(70, 215 - 12 * i, 'ladder');
@@ -183,14 +173,19 @@ BasicGame.Game.prototype = {
       }
 
       var hammer = this.hammers.create(65, 250, 'hammer');
-      var hammer = this.hammers.create(65, 150, 'hammer');
-
+      hammer = this.hammers.create(65, 150, 'hammer');
+      hammer = this.hammers.create(65, 350, 'hammer');
 
       this.pauline = this.game.add.sprite(130, 90, 'pauline');
       this.game.physics.enable(this.pauline);
 
       this.donkeyKong = this.game.add.sprite(20, 100, 'donkey_kong');
-      this.donkeyKong.animations.add('throw', [2, 4, 1], 5, false);
+      this.donkeyKong.animations.add('throw', [0, 3, 5, 2], 5, false);
+
+      var barrel = this.standingBarrels.create(10, 110, 'standing_barrel');
+      barrel = this.standingBarrels.create(10, 100, 'standing_barrel');
+      barrel = this.standingBarrels.create(0, 110, 'standing_barrel');
+      barrel = this.standingBarrels.create(0, 100, 'standing_barrel');
 
       this.fallingBarrel = this.game.add.sprite(0, 100, 'falling_barrel');
       this.game.physics.enable(this.fallingBarrel);
@@ -214,7 +209,7 @@ BasicGame.Game.prototype = {
       cursors = this.game.input.keyboard.createCursorKeys();
 
 
-      this.game.time.events.add(3000 + (3000 * Math.random()), this.throwBarrel, this);
+      this.game.time.events.add(1000 + (3000 * Math.random()), this.throwBarrel, this);
 
       this.stateText = this.game.add.text(this.game.world.centerX,this.game.world.centerY,' ', { font: '48px Arial', fill: '#fff' });
       this.stateText.anchor.setTo(0.5, 0.5);
@@ -228,14 +223,13 @@ BasicGame.Game.prototype = {
       this.music.loopFull();
       this.spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
+
     },
 
     createFireball: function() {
       this.fallingBarrel.kill();
       this.fireball = this.game.add.sprite(0, 350, 'fireball');
       this.game.physics.enable(this.fireball);
-      this.fireball.animations.add('left', [0, 1]);
-      this.fireball.animations.add('right', [2, 3]);
       this.fireball.body.collideWorldBounds = true;
       this.fireball.body.bounce.setTo(1, 0);
       this.game.time.events.add(1000, this.moveFire, this);
@@ -257,17 +251,24 @@ BasicGame.Game.prototype = {
       }
       if (direction < 0.5) {
         this.fireball.body.velocity.x = -20;
-        this.fireball.animations.play('left');
+        this.fireball.frame = 0;
       } else {
         this.fireball.body.velocity.x = 20;
-        this.fireball.animations.play('right');
+        this.fireball.frame = 1;
       }
       this.game.time.events.add(1000, this.moveFire, this);
 
     },
 
     killFire: function() {
+      this.fireball.kill();
 
+      this.score += 500;
+      this.scoreText.text = 'score: ' + this.score;
+
+      this.fallingBarrel = this.game.add.sprite(0, 100, 'falling_barrel');
+      this.game.physics.enable(this.fallingBarrel);
+      this.fallingBarrel.body.velocity.y = 100;
     },
 
     climb: function() {
@@ -276,12 +277,16 @@ BasicGame.Game.prototype = {
         var diffX = ladder.body.x - this.player.body.x;
         if (diffX < 0 && diffX > -12)
         {
+          if (this.player.body.velocity.y === 0 && !this.player.body.touching.down) {
+            this.player.body.gravity.y = 0;
+          }
           if (!this.hasHammer) {
             if (cursors.up.isDown) {
               this.player.body.velocity.y = -50;
             }
             if (cursors.down.isDown) {
               this.player.body.velocity.y = 50;
+              this.platforms.enableBody = false;
             }
           }
         }
@@ -289,17 +294,21 @@ BasicGame.Game.prototype = {
 
     },
 
-    throwBarrel: function() {
-      this.donkeyKong.animations.play('throw');
-      var barrel = this.barrels.create(90, 110, 'barrel');
+    createBarrel: function() {
+      var barrel = this.barrels.create(60, 110, 'barrel');
       this.game.physics.enable(barrel);
       barrel.animations.add('roll', [0, 1, 2, 3], 10, true)
       barrel.body.velocity.x = 75;
       barrel.body.gravity.y = 300;
       barrel.body.collideWorldBounds = true;
       barrel.body.bounce.setTo(1, 0);
+    },
 
-      this.game.time.events.add(3000 + (4000 * Math.random()), this.throwBarrel, this);
+    throwBarrel: function() {
+      this.donkeyKong.animations.play('throw');
+      this.game.time.events.add(500, this.createBarrel, this);
+
+      this.game.time.events.add(1000 + (4000 * Math.random()), this.throwBarrel, this);
 
 
     },
@@ -320,12 +329,16 @@ BasicGame.Game.prototype = {
       this.player.body.velocity.y = 0;
       this.player.body.gravity.y = 0;
       this.player.body.y -= 20;
+      this.player.body.width = 28;
+      this.player.body.height = 32;
       this.game.time.events.add(5000, this.dropHammer, this);
     },
 
     dropHammer: function() {
       this.hasHammer = false;
       this.player.loadTexture('mario', 0);
+      this.player.body.width = 21;
+      this.player.body.height = 18;
     },
 
     jumpOverBarrel: function() {
@@ -333,7 +346,7 @@ BasicGame.Game.prototype = {
       barrels.forEach(function(barrel) {
         var diffY = barrel.body.y - this.player.body.y;
         var diffX = barrel.body.x - this.player.body.x;
-        if (diffY < 130 && diffY > 0 && diffX < 70 && diffX > -70) {
+        if (diffY < 130 && diffY > 0 && diffX < 60 && diffX > -60) {
           if (!this.gameOver) {
             this.score += 100;
             this.scoreText.text = "score: " + this.score;
@@ -343,10 +356,7 @@ BasicGame.Game.prototype = {
     },
 
     update: function () {
-
       this.barrels.callAll('play', null, 'roll');
-
-      // this.oilBarrel.animations.play('fire');
 
       this.player.body.gravity.y = 300;
       this.game.physics.arcade.collide(this.player, this.platforms);
@@ -358,13 +368,14 @@ BasicGame.Game.prototype = {
 
       if (this.hasHammer) {
         this.game.physics.arcade.overlap(this.barrels, this.player, this.killBarrel.bind(this));
+        this.game.physics.arcade.overlap(this.fireball, this.player, this.killFire.bind(this));
       } else {
         this.game.physics.arcade.overlap(this.barrels, this.player, this.quitGame.bind(this));
         this.game.physics.arcade.overlap(this.fireball, this.player, this.quitGame.bind(this));
       }
 
       this.game.physics.arcade.overlap(this.player, this.ladders, this.climb.bind(this));
-      
+
       if (!this.gameOver) {
         this.game.physics.arcade.overlap(this.player, this.pauline, this.winGame.bind(this));
       }

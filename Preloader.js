@@ -34,13 +34,14 @@ BasicGame.Preloader.prototype = {
 		this.load.image('pauline', 'images/pauline1.png');
 		this.load.image('hammer', 'images/hammer.gif');
 		this.load.spritesheet('mario', 'images/mario.png', 21, 18);
-		this.load.spritesheet('mario_hammer', 'images/mariohammer.gif', 28, 32);
+		this.load.spritesheet('mario_hammer', 'images/mariohammer.gif', 28, 33);
 		this.load.spritesheet('barrel', 'images/side_barrel.png', 15, 13);
 		this.load.spritesheet('oil_barrel', 'images/oil_barrel.png', 22, 25);
-		this.load.spritesheet('donkey_kong', 'images/donkey_kong.png', 48, 33);
-		this.load.spritesheet('fireball', 'images/fireball.gif', 21, 20);
+		this.load.spritesheet('donkey_kong', 'images/donkey_kong1.gif', 50, 33);
+		this.load.spritesheet('fireball', 'images/fireball1.gif', 22, 19);
 		this.load.image('mario_death', 'images/mariodeath.gif');
-		this.load.image('falling_barrel', 'images/falling_barrel.gif');
+		this.load.image('falling_barrel', 'images/falling_barrel2.gif');
+		this.load.image('standing_barrel', 'images/barrel.gif')
 		this.load.audio('gameMusic', ['audio/game_music.mp3']);
 
 	},
