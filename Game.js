@@ -44,6 +44,7 @@ BasicGame.Game.prototype = {
       this.hasHammer;
       this.score;
       this.scoreText;
+      this.gameOver;
 
       this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -333,8 +334,10 @@ BasicGame.Game.prototype = {
         var diffY = barrel.body.y - this.player.body.y;
         var diffX = barrel.body.x - this.player.body.x;
         if (diffY < 130 && diffY > 0 && diffX < 70 && diffX > -70) {
-          this.score += 100;
-          this.scoreText.text = "score: " + this.score;
+          if (!this.gameOver) {
+            this.score += 100;
+            this.scoreText.text = "score: " + this.score;
+          }
         }
       }.bind(this))
     },
@@ -361,7 +364,10 @@ BasicGame.Game.prototype = {
       }
 
       this.game.physics.arcade.overlap(this.player, this.ladders, this.climb.bind(this));
-      this.game.physics.arcade.overlap(this.player, this.pauline, this.winGame.bind(this));
+      
+      if (!this.gameOver) {
+        this.game.physics.arcade.overlap(this.player, this.pauline, this.winGame.bind(this));
+      }
 
       this.player.body.velocity.x = 0;
       if (cursors.left.isDown)
@@ -401,8 +407,11 @@ BasicGame.Game.prototype = {
         //  Stop music, delete sprites, purge caches, free resources, all that good stuff.
         this.player.loadTexture('mario_death');
         cursors.disable = true;
-        // this.player.kill();
+        this.gameOver = true;
         this.barrels.callAll('kill');
+
+        finalScore = this.score;
+        this.scoreText.text = "score: " + finalScore;
         this.stateText.text=" GAME OVER \n Click to restart";
         this.stateText.visible = true;
         this.music.stop();
@@ -414,8 +423,9 @@ BasicGame.Game.prototype = {
     },
 
     winGame: function() {
-      this.score += 2000;
-      this.scoreText.text = "score: " + this.score;
+      this.gameOver = true;
+      finalScore = this.score + 2000;
+      this.scoreText.text = "score: " + finalScore;
       this.stateText.text=" YOU WIN \n Click to restart";
       this.stateText.visible = true;
       //  Then let's go back to the main menu.
