@@ -174,13 +174,13 @@ BasicGame.Game.prototype = {
 
       var hammer = this.hammers.create(65, 250, 'hammer');
       hammer = this.hammers.create(65, 150, 'hammer');
-      hammer = this.hammers.create(65, 350, 'hammer');
 
-      this.pauline = this.game.add.sprite(130, 350, 'pauline');
+      this.pauline = this.game.add.sprite(130, 90, 'pauline');
       this.game.physics.enable(this.pauline);
 
       this.donkeyKong = this.game.add.sprite(20, 100, 'donkey_kong');
       this.donkeyKong.animations.add('throw', [0, 3, 5, 2], 5, false);
+      this.game.physics.enable(this.donkeyKong);
 
       var barrel = this.standingBarrels.create(10, 110, 'standing_barrel');
       barrel = this.standingBarrels.create(10, 100, 'standing_barrel');
@@ -208,7 +208,7 @@ BasicGame.Game.prototype = {
       cursors = this.game.input.keyboard.createCursorKeys();
 
 
-      this.game.time.events.add(1000 + (3000 * Math.random()), this.throwBarrel, this);
+      this.throwBarrelEvent = this.game.time.events.add(1000 + (3000 * Math.random()), this.throwBarrel, this);
 
       this.stateText = this.game.add.text(this.game.world.centerX,this.game.world.centerY,' ', { font: '48px Arial', fill: '#fff' });
       this.stateText.anchor.setTo(0.5, 0.5);
@@ -220,6 +220,12 @@ BasicGame.Game.prototype = {
       this.music = this.add.audio('gameMusic');
   		this.music.play();
       this.music.loopFull();
+
+      this.jumpSound = this.add.audio('jump');
+      this.walkSound = this.add.audio('walk');
+      this.hammerSound = this.add.audio('hammer');
+      this.winSound = this.add.audio('win');
+      this.deathSound = this.add.audio('death');
       this.spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
 
@@ -307,7 +313,7 @@ BasicGame.Game.prototype = {
       this.donkeyKong.animations.play('throw');
       this.game.time.events.add(500, this.createBarrel, this);
 
-      this.game.time.events.add(1000 + (4000 * Math.random()), this.throwBarrel, this);
+      this.throwBarrelEvent = this.game.time.events.add(1000 + (4000 * Math.random()), this.throwBarrel, this);
 
 
     },
@@ -316,6 +322,7 @@ BasicGame.Game.prototype = {
       barrel.kill();
       if (this.hasHammer) {
         this.score += 500;
+        this.hammerSound.play();
       }
       this.scoreText.text = 'score: ' + this.score;
     },
@@ -331,6 +338,9 @@ BasicGame.Game.prototype = {
         this.player.body.y -= 20;
         this.player.body.width = 28;
         this.player.body.height = 32;
+        // this.music.stop()
+        // this.hammerSound.play();
+        // this.hammerSound.loopFull();
         this.game.time.events.add(5000, this.dropHammer, this);
       }
     },
@@ -340,6 +350,9 @@ BasicGame.Game.prototype = {
       this.player.loadTexture('mario', 0);
       this.player.body.width = 21;
       this.player.body.height = 18;
+      // this.hammerSound.stop();
+      // this.music.play();
+      // this.music.loopFull();
     },
 
     jumpOverBarrel: function() {
@@ -347,7 +360,7 @@ BasicGame.Game.prototype = {
       barrels.forEach(function(barrel) {
         var diffY = barrel.body.y - this.player.body.y;
         var diffX = barrel.body.x - this.player.body.x;
-        if (diffY < 130 && diffY > 0 && diffX < 60 && diffX > -60) {
+        if (diffY < 50 && diffY > 0 && diffX < 60 && diffX > -60) {
           if (!this.gameOver) {
             this.score += 100;
             this.scoreText.text = "score: " + this.score;
@@ -387,12 +400,14 @@ BasicGame.Game.prototype = {
           //  Move to the left
           this.player.body.velocity.x = -50;
           this.player.animations.play('left');
+          this.walkSound.play();
       }
       else if (cursors.right.isDown)
       {
           //  Move to the right
           this.player.body.velocity.x = 50;
           this.player.animations.play('right');
+          this.walkSound.play();
       }
       else
       {
@@ -405,11 +420,13 @@ BasicGame.Game.prototype = {
       {
           this.player.body.velocity.y = -125;
           this.jumpOverBarrel();
+          this.jumpSound.play();
       }
 
     },
 
     restart: function() {
+      this.gameOver = false;
       this.state.start('MainMenu');
     },
 
@@ -417,6 +434,8 @@ BasicGame.Game.prototype = {
 
         //  Here you should destroy anything you no longer need.
         //  Stop music, delete sprites, purge caches, free resources, all that good stuff.
+        this.music.stop();
+        this.deathSound.play();
         this.player.loadTexture('mario_death');
         cursors.disable = true;
         this.gameOver = true;
@@ -426,8 +445,7 @@ BasicGame.Game.prototype = {
         this.scoreText.text = "score: " + finalScore;
         this.stateText.text=" GAME OVER \n Click to restart";
         this.stateText.visible = true;
-        this.music.stop();
-        this.game.time.events.remove();
+        this.game.time.events.remove(this.throwBarrelEvent);
         //  Then let's go back to the main menu.
         this.game.input.onTap.addOnce(this.restart.bind(this),this);
 
@@ -435,7 +453,13 @@ BasicGame.Game.prototype = {
     },
 
     winGame: function() {
+      this.game.time.events.remove(this.throwBarrelEvent);
+      this.music.stop();
+      this.winSound.play();
       this.gameOver = true;
+      this.donkeyKong.frame = 2;
+      this.game.time.events.add(3000, function(){this.donkeyKong.body.velocity.y = 200;}.bind(this));
+      this.game.time.events.add(4500, function(){this.donkeyKong.kill()}.bind(this))
       finalScore = this.score + 2000;
       this.scoreText.text = "score: " + finalScore;
       this.stateText.text=" YOU WIN \n Click to restart";

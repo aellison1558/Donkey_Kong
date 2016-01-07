@@ -42,7 +42,12 @@ BasicGame.Preloader.prototype = {
 		this.load.image('mario_death', 'images/mariodeath.gif');
 		this.load.image('falling_barrel', 'images/falling_barrel2.gif');
 		this.load.image('standing_barrel', 'images/barrel.gif')
-		this.load.audio('gameMusic', ['audio/game_music.mp3']);
+		this.load.audio('gameMusic', ['audio/bacmusic.wav']);
+		this.load.audio('death', ['audio/death.wav']);
+		this.load.audio('hammer', ['audio/hammer.wav']);
+		this.load.audio('jump', ['audio/jump.wav']);
+		this.load.audio('walking', ['audio/walking.wav']);
+		this.load.audio('win', ['audio/win1.wav']);
 
 	},
 
