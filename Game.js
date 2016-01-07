@@ -174,7 +174,6 @@ BasicGame.Game.prototype = {
 
       var hammer = this.hammers.create(65, 250, 'hammer');
       hammer = this.hammers.create(65, 150, 'hammer');
-      hammer = this.hammers.create(65, 350, 'hammer');
 
       this.pauline = this.game.add.sprite(130, 90, 'pauline');
       this.game.physics.enable(this.pauline);
@@ -193,7 +192,6 @@ BasicGame.Game.prototype = {
 
       this.oilBarrel = this.game.add.sprite(0, 350, 'oil_barrel');
       this.game.physics.enable(this.oilBarrel);
-      // this.oilBarrel.animations.add('fire', [0, 1], 10, true);
 
       this.player = this.game.add.sprite(0, 350, 'mario');
 
@@ -322,16 +320,18 @@ BasicGame.Game.prototype = {
     },
 
     pickUpHammer: function(player, hammer) {
-      hammer.kill();
-      this.hasHammer = true;
-      this.player.loadTexture('mario_hammer', 0);
-      this.game.physics.enable(this.player);
-      this.player.body.velocity.y = 0;
-      this.player.body.gravity.y = 0;
-      this.player.body.y -= 20;
-      this.player.body.width = 28;
-      this.player.body.height = 32;
-      this.game.time.events.add(5000, this.dropHammer, this);
+      if (!this.gameOver) {
+        hammer.kill();
+        this.hasHammer = true;
+        this.player.loadTexture('mario_hammer', 0);
+        this.game.physics.enable(this.player);
+        this.player.body.velocity.y = 0;
+        this.player.body.gravity.y = 0;
+        this.player.body.y -= 20;
+        this.player.body.width = 28;
+        this.player.body.height = 32;
+        this.game.time.events.add(5000, this.dropHammer, this);
+      }
     },
 
     dropHammer: function() {
