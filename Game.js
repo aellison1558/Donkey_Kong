@@ -462,7 +462,7 @@ BasicGame.Game.prototype = {
       this.game.time.events.add(4500, function(){this.donkeyKong.kill()}.bind(this))
       finalScore = this.score + 2000;
       this.scoreText.text = "score: " + finalScore;
-      this.stateText.text=" YOU WIN \n Click to restart";
+      this.stateText.text="     YOU WIN \n Click to restart";
       this.stateText.visible = true;
       //  Then let's go back to the main menu.
       this.game.input.onTap.addOnce(this.restart.bind(this),this);
