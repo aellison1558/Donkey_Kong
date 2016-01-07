@@ -46,7 +46,7 @@ BasicGame.Preloader.prototype = {
 		this.load.audio('death', ['audio/death.wav']);
 		this.load.audio('hammer', ['audio/hammer.wav']);
 		this.load.audio('jump', ['audio/jump.wav']);
-		this.load.audio('walking', ['audio/walking.wav']);
+		this.load.audio('walk', ['audio/walking.wav']);
 		this.load.audio('win', ['audio/win1.wav']);
 
 	},

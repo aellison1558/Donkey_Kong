@@ -46,6 +46,7 @@ BasicGame.Game.prototype = {
       this.scoreText;
       this.gameOver;
       this.standingBarrels;
+      this.jumping;
 
       this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -222,7 +223,6 @@ BasicGame.Game.prototype = {
       this.music.loopFull();
 
       this.jumpSound = this.add.audio('jump');
-      this.walkSound = this.add.audio('walk');
       this.hammerSound = this.add.audio('hammer');
       this.winSound = this.add.audio('win');
       this.deathSound = this.add.audio('death');
@@ -282,7 +282,7 @@ BasicGame.Game.prototype = {
         var diffX = ladder.body.x - this.player.body.x;
         if (diffX < 0 && diffX > -12)
         {
-          if (this.player.body.velocity.y === 0 && !this.player.body.touching.down) {
+          if (this.player.body.velocity.y === 0 && !this.jumping) {
             this.player.body.gravity.y = 0;
           }
           if (!this.hasHammer) {
@@ -291,7 +291,6 @@ BasicGame.Game.prototype = {
             }
             if (cursors.down.isDown) {
               this.player.body.velocity.y = 50;
-              this.platforms.enableBody = false;
             }
           }
         }
@@ -307,6 +306,14 @@ BasicGame.Game.prototype = {
       barrel.body.gravity.y = 300;
       barrel.body.collideWorldBounds = true;
       barrel.body.bounce.setTo(1, 0);
+    },
+
+    collideBarrel: function(player, barrel) {
+      var diffX = barrel.body.x - this.player.body.x;
+      var diffY = barrel.body.y - this.player.body.y;
+      if (diffX < 10 && diffX > -10 && diffY < 10 && diffY > -10) {
+        this.quitGame();
+      }
     },
 
     throwBarrel: function() {
@@ -384,11 +391,13 @@ BasicGame.Game.prototype = {
         this.game.physics.arcade.overlap(this.barrels, this.player, this.killBarrel.bind(this));
         this.game.physics.arcade.overlap(this.fireball, this.player, this.killFire.bind(this));
       } else if (!this.gameOver) {
-        this.game.physics.arcade.overlap(this.barrels, this.player, this.quitGame.bind(this));
+        this.game.physics.arcade.overlap(this.barrels, this.player, this.collideBarrel.bind(this));
         this.game.physics.arcade.overlap(this.fireball, this.player, this.quitGame.bind(this));
       }
 
-      this.game.physics.arcade.overlap(this.player, this.ladders, this.climb.bind(this));
+      if (!this.jumping) {
+        this.game.physics.arcade.overlap(this.player, this.ladders, this.climb.bind(this));
+      }
 
       if (!this.gameOver) {
         this.game.physics.arcade.overlap(this.player, this.pauline, this.winGame.bind(this));
@@ -400,14 +409,12 @@ BasicGame.Game.prototype = {
           //  Move to the left
           this.player.body.velocity.x = -50;
           this.player.animations.play('left');
-          this.walkSound.play();
       }
       else if (cursors.right.isDown)
       {
           //  Move to the right
           this.player.body.velocity.x = 50;
           this.player.animations.play('right');
-          this.walkSound.play();
       }
       else
       {
@@ -416,9 +423,14 @@ BasicGame.Game.prototype = {
       }
 
       //  Allow the this.player to jump if they are touching the ground.
+      if (this.player.body.touching.down) {
+        this.jumping = false;
+      }
+
       if (this.spaceKey.isDown && this.player.body.touching.down && !this.hasHammer)
       {
           this.player.body.velocity.y = -125;
+          this.jumping = true;
           this.jumpOverBarrel();
           this.jumpSound.play();
       }
@@ -454,14 +466,14 @@ BasicGame.Game.prototype = {
 
     winGame: function() {
       this.game.time.events.remove(this.throwBarrelEvent);
+      finalScore = this.score + 2000;
+      this.scoreText.text = "score: " + finalScore;
       this.music.stop();
       this.winSound.play();
       this.gameOver = true;
       this.donkeyKong.frame = 2;
       this.game.time.events.add(3000, function(){this.donkeyKong.body.velocity.y = 200;}.bind(this));
       this.game.time.events.add(4500, function(){this.donkeyKong.kill()}.bind(this))
-      finalScore = this.score + 2000;
-      this.scoreText.text = "score: " + finalScore;
       this.stateText.text="     YOU WIN \n Click to restart";
       this.stateText.visible = true;
       //  Then let's go back to the main menu.
