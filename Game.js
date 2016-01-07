@@ -174,8 +174,9 @@ BasicGame.Game.prototype = {
 
       var hammer = this.hammers.create(65, 250, 'hammer');
       hammer = this.hammers.create(65, 150, 'hammer');
+      hammer = this.hammers.create(65, 350, 'hammer');
 
-      this.pauline = this.game.add.sprite(130, 90, 'pauline');
+      this.pauline = this.game.add.sprite(130, 350, 'pauline');
       this.game.physics.enable(this.pauline);
 
       this.donkeyKong = this.game.add.sprite(20, 100, 'donkey_kong');
@@ -369,7 +370,7 @@ BasicGame.Game.prototype = {
       if (this.hasHammer) {
         this.game.physics.arcade.overlap(this.barrels, this.player, this.killBarrel.bind(this));
         this.game.physics.arcade.overlap(this.fireball, this.player, this.killFire.bind(this));
-      } else {
+      } else if (!this.gameOver) {
         this.game.physics.arcade.overlap(this.barrels, this.player, this.quitGame.bind(this));
         this.game.physics.arcade.overlap(this.fireball, this.player, this.quitGame.bind(this));
       }
