@@ -3,6 +3,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<title>Donkey Kong</title>
+	<link href='https://fonts.googleapis.com/css?family=Yesteryear' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" type="text/css" href="application.css">
 	<script src="./node_modules/phaser/build/phaser.min.js"></script>
 	<script src="Boot.js"></script>
@@ -12,15 +13,17 @@
 </head>
 <body>
 
-<h1>Donkey Kong</h1>
+<h1>Donkey Kong!</h1>
 <div id="gameContainer"></div>
-<p>
-	controls:
-		left/right arrow keys to move
-		up/down arrow keys to climb ladders
-		spacebar to jump
-</p>
-
+<div id="controls">
+	<ul>
+		Controls:
+			<li>Left/right arrow keys to move</li>
+			<li>Up/down arrow keys to climb ladders</li>
+			<li>Spacebar to jump</li>
+			<li>R to restart</liL
+	</ul>
+</div>
 <script type="text/javascript">
 
 window.onload = function() {

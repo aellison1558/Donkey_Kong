@@ -173,6 +173,11 @@ BasicGame.Game.prototype = {
         ladder.body.immovable = true;
       }
 
+      for (var i = 0; i < 3; i++) {
+        var ladder = this.ladders.create(190, 125 - 12 * i, 'ladder');
+        ladder.body.immovable = true;
+      }
+
       var hammer = this.hammers.create(65, 250, 'hammer');
       hammer = this.hammers.create(65, 150, 'hammer');
 
@@ -227,6 +232,8 @@ BasicGame.Game.prototype = {
       this.winSound = this.add.audio('win');
       this.deathSound = this.add.audio('death');
       this.spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+      this.rKey = this.game.input.keyboard.addKey(Phaser.Keyboard.R);
+      this.rKey.onDown.add(this.restart, this);
 
 
     },
@@ -439,7 +446,7 @@ BasicGame.Game.prototype = {
 
     restart: function() {
       this.gameOver = false;
-      this.state.start('MainMenu');
+      this.state.start('Game');
     },
 
     quitGame: function (pointer) {
@@ -455,13 +462,9 @@ BasicGame.Game.prototype = {
 
         finalScore = this.score;
         this.scoreText.text = "score: " + finalScore;
-        this.stateText.text=" GAME OVER \n Click to restart";
+        this.stateText.text=" GAME OVER \n Hit 'R' to restart";
         this.stateText.visible = true;
         this.game.time.events.remove(this.throwBarrelEvent);
-        //  Then let's go back to the main menu.
-        this.game.input.onTap.addOnce(this.restart.bind(this),this);
-
-
     },
 
     winGame: function() {
@@ -474,7 +477,7 @@ BasicGame.Game.prototype = {
       this.donkeyKong.frame = 2;
       this.game.time.events.add(3000, function(){this.donkeyKong.body.velocity.y = 200;}.bind(this));
       this.game.time.events.add(4500, function(){this.donkeyKong.kill()}.bind(this))
-      this.stateText.text="     YOU WIN \n Click to restart";
+      this.stateText.text="     YOU WIN \n Hit 'R' to restart";
       this.stateText.visible = true;
       //  Then let's go back to the main menu.
       this.game.input.onTap.addOnce(this.restart.bind(this),this);
