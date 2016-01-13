@@ -68,7 +68,7 @@ BasicGame.Game.prototype = {
 
 
       for (var i = 0; i < 14; i++) {
-        var platform = this.platforms.create(0 + 15 * i, 380, 'platform');
+        var platform = this.platforms.create(0 + 30 * i, 610, 'platform');
         platform.body.immovable = true;
         platform.body.checkCollision.down = false;
         platform.body.checkCollision.left = false;
@@ -76,7 +76,7 @@ BasicGame.Game.prototype = {
       }
 
       for (var i = 0; i < 10; i++) {
-        var platform = this.platforms.create(200 + 15 * i, 380 - 1 * i, 'platform');
+        var platform = this.platforms.create(420 + 30 * i, 610 - 2 * i, 'platform');
         platform.body.immovable = true;
         platform.body.checkCollision.down = false;
         platform.body.checkCollision.left = false;
@@ -84,7 +84,7 @@ BasicGame.Game.prototype = {
       }
 
       for (var i = 0; i < 50; i++) {
-        var platform = this.platforms.create(315 - 15 * i, 340 - 1 * i, 'platform');
+        var platform = this.platforms.create(630 - 30 * i, 530 - 2 * i, 'platform');
         platform.body.immovable = true;
         platform.body.checkCollision.down = false;
         platform.body.checkCollision.left = false;
@@ -92,7 +92,7 @@ BasicGame.Game.prototype = {
       }
 
       for (var i = 0; i < 20; i++) {
-        var platform = this.platforms.create(65 + 15 * i, 290 - 1 * i, 'platform');
+        var platform = this.platforms.create(130 + 30 * i, 430 - 2 * i, 'platform');
         platform.body.immovable = true;
         platform.body.checkCollision.down = false;
         platform.body.checkCollision.left = false;
@@ -100,7 +100,7 @@ BasicGame.Game.prototype = {
       }
 
       for (var i = 0; i < 30; i++) {
-        var platform = this.platforms.create(320 - 15 * i, 240 - 1 * i, 'platform');
+        var platform = this.platforms.create(640 - 30 * i, 330 - 2 * i, 'platform');
         platform.body.immovable = true;
         platform.body.checkCollision.down = false;
         platform.body.checkCollision.left = false;
@@ -108,7 +108,7 @@ BasicGame.Game.prototype = {
       }
 
       for (var i = 0; i < 20; i++) {
-        var platform = this.platforms.create(65 + 15 * i, 190 - 1 * i, 'platform');
+        var platform = this.platforms.create(130 + 30 * i, 230 - 2 * i, 'platform');
         platform.body.immovable = true;
         platform.body.checkCollision.down = false;
         platform.body.checkCollision.left = false;
@@ -116,7 +116,7 @@ BasicGame.Game.prototype = {
       }
 
       for (var i = 0; i < 11; i++) {
-        var platform = this.platforms.create(325 - 15 * i, 140 - 1 * i, 'platform');
+        var platform = this.platforms.create(650 - 30 * i, 130 - 2 * i, 'platform');
         platform.body.immovable = true;
         platform.body.checkCollision.down = false;
         platform.body.checkCollision.left = false;
@@ -124,7 +124,7 @@ BasicGame.Game.prototype = {
       }
 
       for (var i = 0; i < 12; i++) {
-        var platform = this.platforms.create(0 + 15 * i, 130, 'platform');
+        var platform = this.platforms.create(0 + 30 * i, 110, 'platform');
         platform.body.immovable = true;
         platform.body.checkCollision.down = false;
         platform.body.checkCollision.left = false;
@@ -132,7 +132,7 @@ BasicGame.Game.prototype = {
       }
 
       for (var i = 0; i < 4; i++) {
-        var platform = this.platforms.create(150 + 15 * i, 100, 'platform');
+        var platform = this.platforms.create(300 + 30 * i, 50, 'platform');
         platform.body.immovable = true;
         platform.body.checkCollision.down = false;
         platform.body.checkCollision.left = false;
@@ -140,7 +140,7 @@ BasicGame.Game.prototype = {
       }
 
       for (var i = 0; i < 2; i++) {
-        var platform = this.platforms.create(120 + 15 * i, 110, 'platform');
+        var platform = this.platforms.create(240 + 30 * i, 70, 'platform');
         platform.body.immovable = true;
         platform.body.checkCollision.down = false;
         platform.body.checkCollision.left = false;
@@ -148,62 +148,62 @@ BasicGame.Game.prototype = {
       }
 
       for (var i = 0; i < 3; i++) {
-        var ladder = this.ladders.create(280, 365 - 12 * i, 'ladder');
+        var ladder = this.ladders.create(560, 580 - 24 * i, 'ladder');
         ladder.body.immovable = true;
       }
 
       for (var i = 0; i < 3; i++) {
-        var ladder = this.ladders.create(80, 315 - 12 * i, 'ladder');
+        var ladder = this.ladders.create(160, 480 - 24 * i, 'ladder');
         ladder.body.immovable = true;
       }
 
       for (var i = 0; i < 3; i++) {
-        var ladder = this.ladders.create(307, 265 - 12 * i, 'ladder');
+        var ladder = this.ladders.create(614, 380 - 24 * i, 'ladder');
         ladder.body.immovable = true;
       }
 
 
       for (var i = 0; i < 3; i++) {
-        var ladder = this.ladders.create(70, 215 - 12 * i, 'ladder');
+        var ladder = this.ladders.create(140, 280 - 24 * i, 'ladder');
         ladder.body.immovable = true;
       }
 
       for (var i = 0; i < 3; i++) {
-        var ladder = this.ladders.create(307, 165 - 12 * i, 'ladder');
+        var ladder = this.ladders.create(614, 180 - 24 * i, 'ladder');
         ladder.body.immovable = true;
       }
 
       for (var i = 0; i < 3; i++) {
-        var ladder = this.ladders.create(190, 125 - 12 * i, 'ladder');
+        var ladder = this.ladders.create(380, 100 - 24 * i, 'ladder');
         ladder.body.immovable = true;
       }
 
-      var hammer = this.hammers.create(65, 250, 'hammer');
-      hammer = this.hammers.create(65, 150, 'hammer');
+      var hammer = this.hammers.create(130, 350, 'hammer');
+      hammer = this.hammers.create(130, 150, 'hammer');
 
-      this.pauline = this.game.add.sprite(130, 90, 'pauline');
+      this.pauline = this.game.add.sprite(260, 30, 'pauline');
       this.game.physics.enable(this.pauline);
 
-      this.donkeyKong = this.game.add.sprite(20, 100, 'donkey_kong');
+      this.donkeyKong = this.game.add.sprite(40, 50, 'donkey_kong');
       this.donkeyKong.animations.add('throw', [0, 3, 5, 2], 5, false);
       this.game.physics.enable(this.donkeyKong);
 
-      var barrel = this.standingBarrels.create(10, 110, 'standing_barrel');
-      barrel = this.standingBarrels.create(10, 100, 'standing_barrel');
-      barrel = this.standingBarrels.create(0, 110, 'standing_barrel');
-      barrel = this.standingBarrels.create(0, 100, 'standing_barrel');
+      var barrel = this.standingBarrels.create(20, 70, 'standing_barrel');
+      barrel = this.standingBarrels.create(20, 50, 'standing_barrel');
+      barrel = this.standingBarrels.create(0, 70, 'standing_barrel');
+      barrel = this.standingBarrels.create(0, 50, 'standing_barrel');
 
-      this.fallingBarrel = this.game.add.sprite(0, 100, 'falling_barrel');
+      this.fallingBarrel = this.game.add.sprite(0, 50, 'falling_barrel');
       this.game.physics.enable(this.fallingBarrel);
-      this.fallingBarrel.body.velocity.y = 100;
+      this.fallingBarrel.body.velocity.y = 200;
 
-      this.oilBarrel = this.game.add.sprite(0, 350, 'oil_barrel');
+      this.oilBarrel = this.game.add.sprite(0, 550, 'oil_barrel');
       this.game.physics.enable(this.oilBarrel);
 
-      this.player = this.game.add.sprite(0, 350, 'mario');
+      this.player = this.game.add.sprite(0, 550, 'mario');
 
       this.game.physics.enable(this.player);
-      this.player.body.gravity.y = 300;
+      this.player.body.gravity.y = 600;
       this.player.body.collideWorldBounds = true;
 
       this.player.animations.add('left', [0, 1], 10, true);
@@ -240,7 +240,7 @@ BasicGame.Game.prototype = {
 
     createFireball: function() {
       this.fallingBarrel.kill();
-      this.fireball = this.game.add.sprite(0, 350, 'fireball');
+      this.fireball = this.game.add.sprite(0, 550, 'fireball');
       this.game.physics.enable(this.fireball);
       this.fireball.body.collideWorldBounds = true;
       this.fireball.body.bounce.setTo(1, 0);
@@ -250,22 +250,22 @@ BasicGame.Game.prototype = {
     moveFire: function() {
       var direction = Math.random();
       if (this.fireball.y - this.player.y > 100) {
-        this.fireball.body.velocity.y = -20;
+        this.fireball.body.velocity.y = -40;
       } else if (this.fireball.y - this.player.y < -100) {
-        this.fireball.body.velocity.y = 20;
+        this.fireball.body.velocity.y = 40;
       }
       else {
         if (direction < 0.5) {
-          this.fireball.body.velocity.y = -20
+          this.fireball.body.velocity.y = -40
         } else {
-          this.fireball.body.velocity.y = 20
+          this.fireball.body.velocity.y = 40
         }
       }
       if (direction < 0.5) {
-        this.fireball.body.velocity.x = -20;
+        this.fireball.body.velocity.x = -40;
         this.fireball.frame = 0;
       } else {
-        this.fireball.body.velocity.x = 20;
+        this.fireball.body.velocity.x = 40;
         this.fireball.frame = 1;
       }
       this.game.time.events.add(1000, this.moveFire, this);
@@ -278,26 +278,26 @@ BasicGame.Game.prototype = {
       this.score += 500;
       this.scoreText.text = 'score: ' + this.score;
 
-      this.fallingBarrel = this.game.add.sprite(0, 100, 'falling_barrel');
+      this.fallingBarrel = this.game.add.sprite(0, 200, 'falling_barrel');
       this.game.physics.enable(this.fallingBarrel);
-      this.fallingBarrel.body.velocity.y = 100;
+      this.fallingBarrel.body.velocity.y = 200;
     },
 
     climb: function() {
       var ladders = this.ladders.children
       ladders.forEach(function(ladder) {
         var diffX = ladder.body.x - this.player.body.x;
-        if (diffX < 0 && diffX > -12)
+        if (diffX < 0 && diffX > -24)
         {
           if (this.player.body.velocity.y === 0 && !this.jumping) {
             this.player.body.gravity.y = 0;
           }
           if (!this.hasHammer) {
             if (cursors.up.isDown) {
-              this.player.body.velocity.y = -50;
+              this.player.body.velocity.y = -100;
             }
             if (cursors.down.isDown) {
-              this.player.body.velocity.y = 50;
+              this.player.body.velocity.y = 100;
             }
           }
         }
@@ -306,11 +306,11 @@ BasicGame.Game.prototype = {
     },
 
     createBarrel: function() {
-      var barrel = this.barrels.create(60, 110, 'barrel');
+      var barrel = this.barrels.create(120, 70, 'barrel');
       this.game.physics.enable(barrel);
       barrel.animations.add('roll', [0, 1, 2, 3], 10, true)
-      barrel.body.velocity.x = 75;
-      barrel.body.gravity.y = 300;
+      barrel.body.velocity.x = 150;
+      barrel.body.gravity.y = 600;
       barrel.body.collideWorldBounds = true;
       barrel.body.bounce.setTo(1, 0);
     },
@@ -318,7 +318,7 @@ BasicGame.Game.prototype = {
     collideBarrel: function(player, barrel) {
       var diffX = barrel.body.x - this.player.body.x;
       var diffY = barrel.body.y - this.player.body.y;
-      if (diffX < 10 && diffX > -10 && diffY < 10 && diffY > -10) {
+      if (diffX < 20 && diffX > -20 && diffY < 20 && diffY > -20) {
         this.quitGame();
       }
     },
@@ -350,8 +350,8 @@ BasicGame.Game.prototype = {
         this.player.body.velocity.y = 0;
         this.player.body.gravity.y = 0;
         this.player.body.y -= 20;
-        this.player.body.width = 28;
-        this.player.body.height = 32;
+        this.player.body.width = 56;
+        this.player.body.height = 64;
         // this.music.stop()
         // this.hammerSound.play();
         // this.hammerSound.loopFull();
@@ -362,8 +362,8 @@ BasicGame.Game.prototype = {
     dropHammer: function() {
       this.hasHammer = false;
       this.player.loadTexture('mario', 0);
-      this.player.body.width = 21;
-      this.player.body.height = 18;
+      this.player.body.width = 42;
+      this.player.body.height = 36;
       // this.hammerSound.stop();
       // this.music.play();
       // this.music.loopFull();
@@ -374,7 +374,7 @@ BasicGame.Game.prototype = {
       barrels.forEach(function(barrel) {
         var diffY = barrel.body.y - this.player.body.y;
         var diffX = barrel.body.x - this.player.body.x;
-        if (diffY < 50 && diffY > 0 && diffX < 60 && diffX > -60) {
+        if (diffY < 100 && diffY > 0 && diffX < 120 && diffX > -120) {
           if (!this.gameOver) {
             this.score += 100;
             this.scoreText.text = "score: " + this.score;
@@ -386,7 +386,7 @@ BasicGame.Game.prototype = {
     update: function () {
       this.barrels.callAll('play', null, 'roll');
 
-      this.player.body.gravity.y = 300;
+      this.player.body.gravity.y = 600;
       this.game.physics.arcade.collide(this.player, this.platforms);
       this.game.physics.arcade.collide(this.barrels, this.platforms);
 
@@ -414,13 +414,13 @@ BasicGame.Game.prototype = {
       if (cursors.left.isDown)
       {
           //  Move to the left
-          this.player.body.velocity.x = -50;
+          this.player.body.velocity.x = -100;
           this.player.animations.play('left');
       }
       else if (cursors.right.isDown)
       {
           //  Move to the right
-          this.player.body.velocity.x = 50;
+          this.player.body.velocity.x = 100;
           this.player.animations.play('right');
       }
       else
@@ -436,7 +436,7 @@ BasicGame.Game.prototype = {
 
       if (this.spaceKey.isDown && this.player.body.touching.down && !this.hasHammer)
       {
-          this.player.body.velocity.y = -125;
+          this.player.body.velocity.y = -250;
           this.jumping = true;
           this.jumpOverBarrel();
           this.jumpSound.play();
@@ -475,7 +475,7 @@ BasicGame.Game.prototype = {
       this.winSound.play();
       this.gameOver = true;
       this.donkeyKong.frame = 2;
-      this.game.time.events.add(3000, function(){this.donkeyKong.body.velocity.y = 200;}.bind(this));
+      this.game.time.events.add(3000, function(){this.donkeyKong.body.velocity.y = 400;}.bind(this));
       this.game.time.events.add(4500, function(){this.donkeyKong.kill()}.bind(this))
       this.stateText.text="     YOU WIN \n Hit 'R' to restart";
       this.stateText.visible = true;

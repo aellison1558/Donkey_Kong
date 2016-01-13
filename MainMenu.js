@@ -16,10 +16,12 @@ BasicGame.MainMenu.prototype = {
 
 		this.music = this.add.audio('titleMusic');
 		this.music.play();
+		this.music.loopFull();
 
-		this.add.sprite(0, 0, 'titlepage');
-
-		this.playButton = this.add.button(130, 330, 'playButton', this.startGame, this, 'buttonOver', 'buttonOut', 'buttonOver');
+		this.add.sprite(150, 50, 'titlepage');
+		this.rKey = this.input.keyboard.addKey(Phaser.Keyboard.R);
+		this.rKey.onDown.add(this.startGame, this);
+		this.stateText = this.game.add.text(240, 500,"Hit 'R' to start" , { font: '36px Arial', fill: '#fff' });
 
 	},
 

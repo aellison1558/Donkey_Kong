@@ -15,7 +15,7 @@ BasicGame.Preloader.prototype = {
 		//	These are the assets we loaded in Boot.js
 		//	A nice sparkly background and a loading progress bar
 		// this.background = this.add.sprite(0, 0, 'preloaderBackground');
-		this.preloadBar = this.add.sprite(300, 400, 'preloaderBar');
+		this.preloadBar = this.add.sprite(150, 400, 'preloaderBar');
 
 		//	This sets the preloadBar sprite as a loader sprite.
 		//	What that does is automatically crop the sprite from 0 to full-width
@@ -33,12 +33,12 @@ BasicGame.Preloader.prototype = {
 		this.load.image('ladder', 'images/ladder2.png');
 		this.load.image('pauline', 'images/pauline1.png');
 		this.load.image('hammer', 'images/hammer.gif');
-		this.load.spritesheet('mario', 'images/mario.png', 21, 18);
-		this.load.spritesheet('mario_hammer', 'images/mariohammerclean.png', 32, 29);
-		this.load.spritesheet('barrel', 'images/side_barrel.png', 15, 13);
-		this.load.spritesheet('oil_barrel', 'images/oil_barrel.png', 22, 25);
-		this.load.spritesheet('donkey_kong', 'images/donkey_kong1.gif', 50, 33);
-		this.load.spritesheet('fireball', 'images/fireball1.gif', 22, 19);
+		this.load.spritesheet('mario', 'images/mario.png', 42, 36);
+		this.load.spritesheet('mario_hammer', 'images/mariohammerclean.png', 64, 58);
+		this.load.spritesheet('barrel', 'images/side_barrel.png', 30, 26);
+		this.load.spritesheet('oil_barrel', 'images/oil_barrel.png', 44, 50);
+		this.load.spritesheet('donkey_kong', 'images/donkey_kong1.gif', 101, 66);
+		this.load.spritesheet('fireball', 'images/fireball1.gif', 44, 38);
 		this.load.image('mario_death', 'images/mariodeath.gif');
 		this.load.image('falling_barrel', 'images/falling_barrel2.gif');
 		this.load.image('standing_barrel', 'images/barrel.gif')
