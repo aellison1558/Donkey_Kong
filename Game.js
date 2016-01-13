@@ -197,7 +197,7 @@ BasicGame.Game.prototype = {
       this.game.physics.enable(this.fallingBarrel);
       this.fallingBarrel.body.velocity.y = 200;
 
-      this.oilBarrel = this.game.add.sprite(0, 550, 'oil_barrel');
+      this.oilBarrel = this.game.add.sprite(0, 560, 'oil_barrel');
       this.game.physics.enable(this.oilBarrel);
 
       this.player = this.game.add.sprite(0, 550, 'mario');
