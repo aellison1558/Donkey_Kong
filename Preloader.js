@@ -37,7 +37,7 @@ BasicGame.Preloader.prototype = {
 		this.load.spritesheet('mario_hammer', 'images/mariohammerclean.png', 64, 58);
 		this.load.spritesheet('barrel', 'images/side_barrel.png', 30, 26);
 		this.load.spritesheet('oil_barrel', 'images/oil_barrel.png', 44, 50);
-		this.load.spritesheet('donkey_kong', 'images/donkey_kong1.gif', 101, 66);
+		this.load.spritesheet('donkey_kong', 'images/donkey_kong1.gif', 100, 66);
 		this.load.spritesheet('fireball', 'images/fireball1.gif', 44, 38);
 		this.load.image('mario_death', 'images/mariodeath.gif');
 		this.load.image('falling_barrel', 'images/falling_barrel2.gif');
