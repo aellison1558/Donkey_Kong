@@ -445,6 +445,7 @@ BasicGame.Game.prototype = {
     },
 
     restart: function() {
+      this.music.stop();
       this.gameOver = false;
       this.state.start('Game');
     },
